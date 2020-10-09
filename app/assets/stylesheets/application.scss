@@ -13,3 +13,14 @@
  *= require_tree .
  *= require_self
  */
+
+ @import 'bulma/bulma.sass';
+
+.iframe-container {
+  overflow: hidden;
+  position: relative;
+
+  iframe {
+    width: 100%;
+  }
+}

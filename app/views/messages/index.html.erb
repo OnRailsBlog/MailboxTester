@@ -1,0 +1,89 @@
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+  <% unless @page <= 0 %>
+	<%= link_to "&lt; prev".html_safe, messages_path(page: @page - 1), class: "pagination-previous" %>
+  <% end %>
+  <ul class="pagination-list">
+	<li>
+	  <% (FIRST_PAGE..@total_pages).each do |i| %>
+		<% if i == @page %>
+		  <a class="pagination-link is-current" aria-label="Page <%= @page + 1 %>" aria-current="page"><%= @page + 1 %></a>
+		<% else %>
+		  <%= link_to "#{i + 1}", messages_path(page: i), class: "pagination-link" %>
+		<% end %>
+	  <% end %>
+	</li>
+  </ul>
+  <% unless @page + 1 > @total_pages %>
+	<%= link_to "more &gt;".html_safe, messages_path(page: @page + 1), class: "pagination-next" %>
+  <% end %>
+</nav>
+<section class="section" data-controller="item-location items" data-item-location-channel="TopItemChannel">
+  <div class="columns is-multiline">
+	<% @messages.each_slice(4) do |slice| %>
+	  <% slice.each do |message| %>
+		<div class="column is-half-widescreen is-full-desktop is-full-tablet is-full-mobile">
+		  <div class="card" data-message-id="<%= message.id %>">
+			<header class="card-header">
+			  <p class="card-header-title">
+				<span class="tag is-link is-rounded"><%= message.id %></span>
+				&nbsp;&nbsp;<%= local_time_ago message.created_at %>
+			  </p>
+			</header>
+			<div class="card-content">
+			  <p class="title">
+				<%= message.mail.subject %>
+			  </p>
+			  <p class="content">
+			  <div class="content">
+				sender: <%= message.mail.sender %>
+				<br/>
+				from: <%= message.mail.from %>
+				<br/>
+				to: <%= message.mail.to %>
+				<br/>
+				cc: <%= message.mail.cc %>
+			  </div>
+			  <% if message.mail.multipart? %>
+				<% message.mail.parts.each do |part| %>
+				  <div class="content">
+					<p><%= part.content_type %></p>
+					<div class="iframe-container">
+					  <iframe srcdoc="<%= part.decoded %>"></iframe>
+					</div>
+				  </div>
+				<% end %>
+			  <% else %>
+				<%= message.mail.body %>
+			  <% end %>
+			  </p>
+			</div>
+			<div class="card-footer">
+			  <p class="card-footer-item is-small">
+				&nbsp;<span class="level-item by"><%= local_time_ago message.created_at %></span>
+			  </p>
+			</div>
+		  </div>
+		</div>
+	  <% end %>
+	<% end %>
+  </div>
+</section>
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+  <% unless @page <= 0 %>
+	<%= link_to "&lt; prev".html_safe, messages_path(page: @page - 1), class: "pagination-previous" %>
+  <% end %>
+  <ul class="pagination-list">
+	<li>
+	  <% (FIRST_PAGE..@total_pages).each do |i| %>
+		<% if i == @page %>
+		  <a class="pagination-link is-current" aria-label="Page <%= @page + 1 %>" aria-current="page"><%= @page + 1 %></a>
+		<% else %>
+		  <%= link_to "#{i + 1}", messages_path(page: i), class: "pagination-link" %>
+		<% end %>
+	  <% end %>
+	</li>
+  </ul>
+  <% unless @page + 1 > @total_pages %>
+	<%= link_to "more &gt;".html_safe, messages_path(page: @page + 1), class: "pagination-next" %>
+  <% end %>
+</nav>
